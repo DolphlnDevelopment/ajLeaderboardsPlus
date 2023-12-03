@@ -27,9 +27,22 @@ public class PlayerPosition extends Placeholder {
         if(type == null) {
             return "Invalid TimedType '" + typeRaw + "'";
         }
+        boolean reverse = board.endsWith("REVERSE");
+
+        if (reverse) {
+            board = board.substring(0, board.length() - 7);
+            type = TimedType.ALLTIME;
+        }
+
         int position = plugin.getTopManager().getStatEntry(p, board, type).getPosition();
         if(position == -3) return "BDNE";
         if(position == -2) return plugin.getMessages().getString("loading.position");
+
+        if (reverse) {
+            int size = plugin.getTopManager().getBoardSize(board);
+            position = size - position + 1;
+        }
+
         return StatEntry.addCommas(position);
     }
 }

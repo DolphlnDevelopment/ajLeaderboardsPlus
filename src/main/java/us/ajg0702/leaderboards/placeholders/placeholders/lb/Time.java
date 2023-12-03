@@ -25,7 +25,13 @@ public class Time extends Placeholder {
         plugin.timePlaceholderUsed();
         String board = matcher.group(1);
         String typeRaw = matcher.group(3).toUpperCase(Locale.ROOT);
-        StatEntry r = plugin.getTopManager().getStat(Integer.parseInt(matcher.group(2)), board, TimedType.valueOf(typeRaw));
+        StatEntry r;
+        if (board.endsWith("REVERSE")) {
+            board = board.substring(0, board.length() - 7);
+            r = plugin.getTopManager().getReversedStat(Integer.parseInt(matcher.group(2)), board, TimedType.ALLTIME);
+        } else {
+            r = plugin.getTopManager().getStat(Integer.parseInt(matcher.group(2)), board, TimedType.valueOf(typeRaw));
+        }
         return r.getTime();
     }
 }

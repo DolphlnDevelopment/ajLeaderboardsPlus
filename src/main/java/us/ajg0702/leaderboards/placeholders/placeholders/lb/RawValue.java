@@ -28,7 +28,15 @@ public class RawValue extends Placeholder {
         if(type == null) {
             return "Invalid TimedType '" + typeRaw + "'";
         }
-        StatEntry r = plugin.getTopManager().getStat(Integer.parseInt(matcher.group(2)), board, type);
+        StatEntry r;
+        if (board.endsWith("REVERSE")) {
+            board = board.substring(0, board.length() - 7);
+            type = TimedType.ALLTIME;
+            r = plugin.getTopManager().getReversedStat(Integer.parseInt(matcher.group(2)), board, type);
+        } else {
+            r = plugin.getTopManager().getStat(Integer.parseInt(matcher.group(2)), board, type);
+        }
+
         DecimalFormat df = new DecimalFormat("#.##");
         return df.format(r.getScore());
     }

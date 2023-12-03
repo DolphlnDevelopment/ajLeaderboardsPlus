@@ -27,14 +27,30 @@ public class Extra extends Placeholder {
         if(type == null) {
             return "Invalid TimedType '" + typeRaw + "'";
         }
-        StatEntry r = plugin.getTopManager().getStat(Integer.parseInt(matcher.group(2)), board, type);
-        if(!r.hasPlayer()) {
-            return plugin.getMessages().getRawString("no-data.extra");
+
+        StatEntry r;
+        if (board.endsWith("REVERSE")) {
+            board = board.substring(0, board.length() - 7);
+            type = TimedType.ALLTIME;
+            r = plugin.getTopManager().getReversedStat(Integer.parseInt(matcher.group(2)), board, type);
+            if(!r.hasPlayer()) {
+                return plugin.getMessages().getRawString("no-data.extra");
+            }
+            String value = plugin.getTopManager().getExtra(r.getPlayerID(), matcher.group(4));
+            if(value == null) {
+                return plugin.getMessages().getRawString("no-data.extra");
+            }
+            return value;
+        } else {
+            r = plugin.getTopManager().getStat(Integer.parseInt(matcher.group(2)), board, type);
+            if(!r.hasPlayer()) {
+                return plugin.getMessages().getRawString("no-data.extra");
+            }
+            String value = plugin.getTopManager().getExtra(r.getPlayerID(), matcher.group(4));
+            if(value == null) {
+                return plugin.getMessages().getRawString("no-data.extra");
+            }
+            return value;
         }
-        String value = plugin.getTopManager().getExtra(r.getPlayerID(), matcher.group(4));
-        if(value == null) {
-            return plugin.getMessages().getRawString("no-data.extra");
-        }
-        return value;
     }
 }
