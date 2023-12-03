@@ -97,6 +97,17 @@ public class TopManager {
      * @param board The board
      * @return The StatEntry representing the position on the board
      */
+    public StatEntry getReversedStat(int position, String board, TimedType type) {
+        int size = getBoardSize(board);
+        return getStat(size-position+1, board, type);
+    }
+
+    /**
+     * Get a leaderboard position
+     * @param position The position to get
+     * @param board The board
+     * @return The StatEntry representing the position on the board
+     */
     public StatEntry getStat(int position, String board, TimedType type) {
         PositionBoardType key = new PositionBoardType(position, board, type);
         StatEntry cached = positionCache.getIfPresent(key);
